@@ -1,5 +1,6 @@
 import { pushMessage } from "@/lib/line/client";
-import { CreateMessagePayload, insertMessage } from "@/lib/supabase/repository";
+import { insertMessage } from "@/lib/supabase/repository";
+import type { CreateMessagePayload } from "@/lib/supabase/types";
 import { Direction } from "@/types/chat";
 
 export async function POST(req: Request) {

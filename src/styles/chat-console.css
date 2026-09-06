@@ -42,6 +42,8 @@
   font-weight: 600;
 }
 
+/* ---------- Main Body ---------- */
+
 .chat-console__body {
   display: flex;
   flex: 1;

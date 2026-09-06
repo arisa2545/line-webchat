@@ -22,12 +22,12 @@ export default function Home() {
 
       <div className="chat-console__body">
         {/* ── Sidebar: User List ──────────────────────────── */}
-        <aside className="chat-console__sidebar">
+        <div className="chat-console__sidebar">
           <UserList
             selectedUserId={selectedUserId}
             onSelect={setSelectedUserId}
           />
-        </aside>
+        </div>
 
         {/* ── Chat pane ────────────────────────────────────────── */}
         <section className="chat-console__chat">

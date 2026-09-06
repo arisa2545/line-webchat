@@ -42,6 +42,6 @@ alter publication supabase_realtime add table messages;
 alter table line_users enable row level security;
 alter table messages   enable row level security;
 
--- อ่านได้สาธารณะ (MVP — ดูข้อ 8 ในแผนถ้าจะอัปเกรดเป็น auth)
+-- อ่านได้สาธารณะเพื่อ support realtime subscription
 create policy "public read" on line_users for select using (true);
 create policy "public read" on messages   for select using (true);
