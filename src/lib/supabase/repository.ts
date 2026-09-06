@@ -23,7 +23,7 @@ type LineMessageRow = {
 };
 
 type LineConversationRow = LineUserRow & {
-  messages: { text: string; created_at: string }[];
+  messages: { text: string; type: string; created_at: string }[];
 };
 
 
@@ -54,6 +54,7 @@ function toChatMessage(row: LineMessageRow): ChatMessage {
     id: row.id,
     userId: row.user_id,
     direction: row.direction,
+    type: row.type,
     text: row.text,
     createdAt: row.created_at,
   };
@@ -65,14 +66,15 @@ function toChatConversation(row: LineConversationRow): Conversation {
     displayName: row.display_name,
     pictureUrl: row.picture_url ?? undefined,
     lastMessageAt: row.last_message_at,
-    lastMessageText: row.messages[0]?.text || "",
+    lastMessageText: row.messages[0]?.text ?? "",
+    lastMessageType: row.messages[0]?.type ?? "text",
   };
 }
 
 export async function getConversations(): Promise<Conversation[]> {
   const { data, error } = await supabase
     .from("line_users")
-    .select("id, display_name, picture_url, last_message_at, messages(text, created_at)")
+    .select("id, display_name, picture_url, last_message_at, messages(text, type, created_at)")
     .order("last_message_at", { ascending: false })
     .order("created_at", { referencedTable: "messages", ascending: false })
     .limit(1, { referencedTable: "messages" });

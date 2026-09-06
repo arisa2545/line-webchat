@@ -47,3 +47,12 @@
 .message-bubble--outbound .message-bubble__time {
   text-align: right;
 }
+
+/* ---------- ชนิดที่ยังแสดงผลไม่ได้ (สติกเกอร์ / รูป / ไฟล์ ...) ---------- */
+.message-bubble--unsupported .message-bubble__text {
+  background: var(--surface-sunken);
+  border: 1px dashed var(--border);
+  color: var(--text-subtle);
+  font-size: 0.8125rem;
+  font-style: italic;
+}

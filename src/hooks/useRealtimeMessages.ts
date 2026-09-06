@@ -8,6 +8,7 @@ type MessageRow = {
   id: string;
   user_id: string;
   direction: Direction;
+  type: string;
   text: string;
   created_at: string;
 };
@@ -45,6 +46,7 @@ export function useRealtimeMessages(
             id: row.id,
             userId: row.user_id,
             direction: row.direction,
+            type: row.type,
             text: row.text,
             createdAt: row.created_at,
           });

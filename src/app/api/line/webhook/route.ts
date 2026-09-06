@@ -33,19 +33,20 @@ export async function POST(req: Request) {
 }
 
 async function handleEvent(event: LineWebhookEvent): Promise<void> {
-  if (event.type !== "message" || event.message?.type !== "text") return; // ignore non-text messages
+  if (event.type !== "message" || !event.message) {
+    console.log(`[webhook] ข้าม event: ${event.type}`);
+    return;
+  }
 
   const userId = event.source?.userId;
-  const text = event.message.text;
-  if (!userId || !text) return;
+  if (!userId) return;
 
   await ensureUser(userId);
-
   await insertMessage({
     userId,
     direction: Direction.inbound,
-    type: "text",
-    text,
+    type: event.message.type,
+    text: event.message.text ?? "",
   });
 }
 

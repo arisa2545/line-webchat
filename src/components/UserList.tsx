@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Conversation } from "@/types/chat";
 import "@/styles/user-list.css";
-import { formatTime } from "@/app/utils/format";
+import { formatTime, previewText } from "@/app/utils/format";
 import { Avatar } from "./Avatar";
 import { useRealtimeMessages } from "@/hooks/useRealtimeMessages";
 
@@ -108,7 +108,10 @@ export default function UserList({ selectedUserId, onSelect }: UserListProps) {
                   </span>
 
                   <span className="user-list__preview">
-                    {conversation.lastMessageText || "ยังไม่มีข้อความ"}
+                    {previewText(
+                      conversation.lastMessageType,
+                      conversation.lastMessageText,
+                    ) || "ยังไม่มีข้อความ"}
                   </span>
                 </span>
               </button>
