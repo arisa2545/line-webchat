@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **LINE OA** | [`https://line.me/R/ti/p/@566rdlqp`](https://line.me/R/ti/p/@566rdlqp) — หรือค้นหา ID `@566rdlqp` ในแอป LINE |
+| **LINE OA** | [`https://line.me/R/ti/p/%40566rdlqp`](https://line.me/R/ti/p/@566rdlqp) — หรือค้นหา ID `@566rdlqp` ในแอป LINE |
 | **Webchat Console** | **https://line-webchat-jet.vercel.app** |
 | **GitHub** | https://github.com/arisa2545/line-webchat |
 
