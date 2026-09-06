@@ -8,7 +8,6 @@
 |---|---|
 | **LINE OA** | [`https://line.me/R/ti/p/%40566rdlqp`](https://line.me/R/ti/p/@566rdlqp) — หรือค้นหา ID `@566rdlqp` ในแอป LINE |
 | **Webchat Console** | **https://line-webchat-jet.vercel.app** |
-| **GitHub** | https://github.com/arisa2545/line-webchat |
 
 **ทดสอบได้ทันทีจากลิงก์ด้านบน ไม่ต้องติดตั้งอะไร** — แอดเพื่อนกับ LINE OA แล้วทักข้อความ จากนั้นเปิดคอนโซลเพื่อดูและตอบกลับ (คอนโซลไม่มีระบบล็อกอิน)
 
