@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LINE OA Webchat Console
 
-## Getting Started
+คอนโซลสำหรับ operator ที่รวมแชทจากผู้ใช้ LINE หลายคนมาไว้ที่เดียว เลือกคนแล้วตอบกลับได้
 
-First, run the development server:
+## 🔗 ลิงก์สำหรับทดสอบ
+
+| | |
+|---|---|
+| **LINE OA** | [`https://line.me/R/ti/p/@566rdlqp`](https://line.me/R/ti/p/@566rdlqp) — หรือค้นหา ID `@566rdlqp` ในแอป LINE |
+| **Webchat Console** | **https://line-webchat-jet.vercel.app** |
+| **GitHub** | https://github.com/arisa2545/line-webchat |
+
+**ทดสอบได้ทันทีจากลิงก์ด้านบน ไม่ต้องติดตั้งอะไร** — แอดเพื่อนกับ LINE OA แล้วทักข้อความ จากนั้นเปิดคอนโซลเพื่อดูและตอบกลับ (คอนโซลไม่มีระบบล็อกอิน)
+
+---
+
+## 💻 วิธีรันโปรเจกต์
+
+> หัวข้อนี้สำหรับคนที่ต้องการ**รันจากซอร์สโค้ดในเครื่องตัวเอง**เท่านั้น — ถ้าแค่ต้องการทดสอบระบบ ใช้ลิงก์ด้านบนได้เลย
+>
+> การรันในเครื่องต้องใช้ Supabase project และ LINE Official Account **ของตัวเอง** เพราะ repo นี้เป็น public จึงไม่มี secret ใด ๆ อยู่ในโค้ด
+>
+> 📩 หากกรรมการต้องการรันในเครื่องโดยใช้ Supabase และ LINE OA ชุดเดียวกับที่ deploy อยู่ **ติดต่อผู้จัดทำเพื่อขอค่า environment variables ได้โดยตรง** — ยินดีส่งให้เป็นการส่วนตัว แต่ไม่เผยแพร่ในที่สาธารณะเพราะ repo เป็น public
+
+### 1. ติดตั้ง
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/arisa2545/line-webchat.git
+cd line-webchat
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. ตั้งฐานข้อมูล
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+สร้าง Supabase project แล้วรัน [`supabase/schema.sql`](supabase/schema.sql) ทั้งไฟล์ใน SQL Editor — ไฟล์เดียวจบครบทั้งตาราง index RLS และ realtime publication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. ตั้ง environment variables
 
-## Learn More
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+แล้วเติมให้ครบ 5 ตัว:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| ตัวแปร | หาได้จาก |
+|---|---|
+| `LINE_CHANNEL_SECRET` | LINE Developers Console → Basic settings |
+| `LINE_CHANNEL_ACCESS_TOKEN` | LINE Developers Console → Messaging API → Issue |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Settings → Data API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Settings → API Keys |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API Keys |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> `NEXT_PUBLIC_SUPABASE_URL` ต้องเป็น URL ของ project เท่านั้น (`https://xxx.supabase.co`) ไม่ต้องมี `/rest/v1/` ต่อท้าย
 
-## Deploy on Vercel
+### 4. รัน
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev     # http://localhost:3000
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. ให้ LINE ยิง webhook เข้าเครื่อง
+
+LINE ต้องการ HTTPS จึงยิงเข้า `localhost` ตรง ๆ ไม่ได้ ต้องเปิด tunnel:
+
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
+เอา URL ที่ได้ไปใส่ใน LINE Developers Console เป็น `<url>/api/line/webhook`
