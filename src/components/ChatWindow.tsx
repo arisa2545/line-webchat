@@ -7,11 +7,15 @@ import "@/styles/chat-window.css";
 
 type ChatWindowProps = {
   selectedUserId: string;
+  reloadToken: number; // it will be replace with real-time update in next phase
 };
 
 type LoadStatus = "loading" | "ready" | "error";
 
-export default function ChatWindow({ selectedUserId }: ChatWindowProps) {
+export default function ChatWindow({
+  selectedUserId,
+  reloadToken,
+}: ChatWindowProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [status, setStatus] = useState<LoadStatus>("loading");
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -40,7 +44,7 @@ export default function ChatWindow({ selectedUserId }: ChatWindowProps) {
     return () => {
       cancelled = true;
     };
-  }, [selectedUserId]);
+  }, [selectedUserId, reloadToken]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView();

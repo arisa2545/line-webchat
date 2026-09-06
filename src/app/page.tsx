@@ -5,9 +5,12 @@ import { ChatBubbleIcon } from "@/components/icons/ChatBubbleIcon";
 import UserList from "@/components/UserList";
 import "@/styles/chat-console.css";
 import ChatWindow from "@/components/ChatWindow";
+import MessageInput from "@/components/MessageInput";
 
 export default function Home() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  // TODO: replace this with real-time update in next phase
+  const [reloadToken, setReloadToken] = useState(0);
 
   return (
     <div className="chat-console">
@@ -31,7 +34,11 @@ export default function Home() {
         {/* ── Chat pane ────────────────────────────────────────── */}
         <section className="chat-console__chat">
           {selectedUserId && (
-            <ChatWindow key={selectedUserId} selectedUserId={selectedUserId} />
+            <ChatWindow
+              key={selectedUserId}
+              selectedUserId={selectedUserId}
+              reloadToken={reloadToken}
+            />
           )}
           {!selectedUserId && (
             <div className="chat-console__empty">
@@ -49,18 +56,10 @@ export default function Home() {
             </div>
           )}
 
-          {/* TODO: แทนที่ด้วย <MessageInput /> */}
-          <div className="chat-console__composer">
-            <input
-              type="text"
-              disabled
-              placeholder="เลือกผู้ใช้ก่อนจึงจะพิมพ์ได้"
-              className="chat-console__input"
-            />
-            <button type="button" disabled className="chat-console__send">
-              ส่ง
-            </button>
-          </div>
+          <MessageInput
+            userId={selectedUserId}
+            onSent={() => setReloadToken((token) => token + 1)}
+          />
         </section>
       </div>
     </div>

@@ -33,7 +33,7 @@ type CreateUserPayload = {
   pictureUrl?: string;
 };
 
-type CreateMessagePayload = {
+export type CreateMessagePayload = {
   userId: string;
   direction: Direction;
   type: string;
