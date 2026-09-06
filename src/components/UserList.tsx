@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Conversation } from "@/types/chat";
 import "@/styles/user-list.css";
 import { formatTime } from "@/app/utils/format";
 import { Avatar } from "./Avatar";
+import { useRealtimeMessages } from "@/hooks/useRealtimeMessages";
 
 type UserListProps = {
   selectedUserId: string | null;
@@ -12,6 +13,12 @@ type UserListProps = {
 };
 
 type LoadStatus = "loading" | "ready" | "error";
+
+async function fetchConversations(): Promise<Conversation[]> {
+  const res = await fetch("/api/conversations");
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
 
 export default function UserList({ selectedUserId, onSelect }: UserListProps) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -22,10 +29,7 @@ export default function UserList({ selectedUserId, onSelect }: UserListProps) {
 
     (async () => {
       try {
-        const res = await fetch("/api/conversations");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const data: Conversation[] = await res.json();
+        const data = await fetchConversations();
         if (cancelled) return;
 
         setConversations(data);
@@ -40,6 +44,14 @@ export default function UserList({ selectedUserId, onSelect }: UserListProps) {
       cancelled = true;
     };
   }, []);
+
+  useRealtimeMessages(
+    useCallback(() => {
+      fetchConversations()
+        .then(setConversations)
+        .catch((error) => console.error("[UserList] refresh failed", error));
+    }, []),
+  );
 
   return (
     <div className="user-list">

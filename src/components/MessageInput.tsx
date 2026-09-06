@@ -5,10 +5,9 @@ import "@/styles/message-input.css";
 
 type MessageInputProps = {
   userId: string | null;
-  onSent: () => void;
 };
 
-export default function MessageInput({ userId, onSent }: MessageInputProps) {
+export default function MessageInput({ userId }: MessageInputProps) {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +31,6 @@ export default function MessageInput({ userId, onSent }: MessageInputProps) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       setText("");
-      onSent();
     } catch (err) {
       console.error("[MessageInput] send failed", err);
       setError("ส่งไม่สำเร็จ ลองใหม่อีกครั้ง");

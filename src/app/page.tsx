@@ -9,8 +9,6 @@ import MessageInput from "@/components/MessageInput";
 
 export default function Home() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-  // TODO: replace this with real-time update in next phase
-  const [reloadToken, setReloadToken] = useState(0);
 
   return (
     <div className="chat-console">
@@ -34,11 +32,7 @@ export default function Home() {
         {/* ── Chat pane ────────────────────────────────────────── */}
         <section className="chat-console__chat">
           {selectedUserId && (
-            <ChatWindow
-              key={selectedUserId}
-              selectedUserId={selectedUserId}
-              reloadToken={reloadToken}
-            />
+            <ChatWindow key={selectedUserId} selectedUserId={selectedUserId} />
           )}
           {!selectedUserId && (
             <div className="chat-console__empty">
@@ -56,10 +50,7 @@ export default function Home() {
             </div>
           )}
 
-          <MessageInput
-            userId={selectedUserId}
-            onSent={() => setReloadToken((token) => token + 1)}
-          />
+          <MessageInput userId={selectedUserId} />
         </section>
       </div>
     </div>

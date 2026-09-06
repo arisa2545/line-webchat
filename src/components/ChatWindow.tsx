@@ -3,19 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChatMessage } from "@/types/chat";
 import MessageBubble from "./MessageBubble";
+import { useRealtimeMessages } from "@/hooks/useRealtimeMessages";
 import "@/styles/chat-window.css";
 
 type ChatWindowProps = {
   selectedUserId: string;
-  reloadToken: number; // it will be replace with real-time update in next phase
 };
 
 type LoadStatus = "loading" | "ready" | "error";
 
-export default function ChatWindow({
-  selectedUserId,
-  reloadToken,
-}: ChatWindowProps) {
+export default function ChatWindow({ selectedUserId }: ChatWindowProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [status, setStatus] = useState<LoadStatus>("loading");
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -44,7 +41,16 @@ export default function ChatWindow({
     return () => {
       cancelled = true;
     };
-  }, [selectedUserId, reloadToken]);
+  }, [selectedUserId]);
+
+  useRealtimeMessages((message) => {
+    setMessages((prev) =>
+      // Realtime อาจยิงซ้ำ หรือชนกับรอบ fetch — กันด้วย id
+      prev.some((existing) => existing.id === message.id)
+        ? prev
+        : [...prev, message],
+    );
+  }, selectedUserId);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
