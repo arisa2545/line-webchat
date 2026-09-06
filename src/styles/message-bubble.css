@@ -1,0 +1,49 @@
+.message-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  max-width: min(75%, 32rem);
+}
+
+.message-bubble__text {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.message-bubble__time {
+  color: var(--text-subtle);
+  font-size: 0.6875rem;
+}
+
+/* ---------- Inbound: ข้อความจาก user อยู่ซ้าย ---------- */
+
+.message-bubble--inbound {
+  align-self: flex-start;
+}
+
+.message-bubble--inbound .message-bubble__text {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) var(--radius) 2px;
+  color: var(--text);
+}
+
+/* ---------- Outbound: ข้อความจาก operator อยู่ขวา ---------- */
+
+.message-bubble--outbound {
+  align-self: flex-end;
+}
+
+.message-bubble--outbound .message-bubble__text {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius) var(--radius) 2px var(--radius);
+  color: var(--on-accent);
+}
+
+.message-bubble--outbound .message-bubble__time {
+  text-align: right;
+}

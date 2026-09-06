@@ -17,3 +17,7 @@ export interface ChatMessage {
     text: string;
     createdAt: string;
 }
+
+export interface Conversation extends ChatUser {
+    lastMessageText: string;
+}

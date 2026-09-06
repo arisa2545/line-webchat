@@ -1,0 +1,31 @@
+.chat-window {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.chat-window__messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  margin: 0;
+  list-style: none;
+}
+
+.chat-window__state {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: var(--text-subtle);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+.chat-window__state--error {
+  color: var(--warn-text);
+}

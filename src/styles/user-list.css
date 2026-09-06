@@ -1,0 +1,147 @@
+.user-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ---------- Header ---------- */
+
+.user-list__header {
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.user-list__title {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.user-list__count {
+  margin-top: 0.125rem;
+  min-height: 1rem;
+  color: var(--text-subtle);
+  font-size: 0.75rem;
+}
+
+/* ---------- Loading / empty / error ---------- */
+
+.user-list__state {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: var(--text-subtle);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.user-list__state--error {
+  color: var(--warn-text);
+}
+
+/* ---------- Items ---------- */
+
+.user-list__items {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.user-list__item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  transition: background-color 0.15s;
+}
+
+.user-list__item:hover {
+  background: var(--surface-sunken);
+}
+
+.user-list__item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.user-list__item--active,
+.user-list__item--active:hover {
+  background: var(--surface-sunken);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+/* ---------- Avatar ---------- */
+
+.user-list__avatar {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-pill);
+  object-fit: cover;
+}
+
+.user-list__avatar--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ---------- Text ---------- */
+
+.user-list__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.user-list__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.user-list__name {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-list__time {
+  flex-shrink: 0;
+  color: var(--text-subtle);
+  font-size: 0.6875rem;
+}
+
+.user-list__preview {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

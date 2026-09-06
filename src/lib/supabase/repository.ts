@@ -1,5 +1,10 @@
 import { supabase } from "./server";
-import type { Direction, ChatUser, ChatMessage } from "@/types/chat";
+import type {
+  Direction,
+  ChatUser,
+  ChatMessage,
+  Conversation,
+} from "@/types/chat";
 
 type LineUserRow = {
   id: string;
@@ -16,6 +21,11 @@ type LineMessageRow = {
   text: string;
   created_at: string;
 };
+
+type LineConversationRow = LineUserRow & {
+  messages: { text: string; created_at: string }[];
+};
+
 
 type CreateUserPayload = {
   id: string;
@@ -47,6 +57,41 @@ function toChatMessage(row: LineMessageRow): ChatMessage {
     text: row.text,
     createdAt: row.created_at,
   };
+}
+
+function toChatConversation(row: LineConversationRow): Conversation {
+  return {
+    id: row.id,
+    displayName: row.display_name,
+    pictureUrl: row.picture_url ?? undefined,
+    lastMessageAt: row.last_message_at,
+    lastMessageText: row.messages[0]?.text || "",
+  };
+}
+
+export async function getConversations(): Promise<Conversation[]> {
+  const { data, error } = await supabase
+    .from("line_users")
+    .select("id, display_name, picture_url, last_message_at, messages(text, created_at)")
+    .order("last_message_at", { ascending: false })
+    .order("created_at", { referencedTable: "messages", ascending: false })
+    .limit(1, { referencedTable: "messages" });
+
+  if (error) throw new Error(`Supabase get conversations failed: ${error.message}`);
+
+  return data ? data.map(toChatConversation) : [];
+}
+
+export async function getMessagesByUserId(userId: string): Promise<ChatMessage[]> {
+  const { data, error } = await supabase
+    .from("messages")
+    .select("id, user_id, direction, type, text, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: true });
+
+  if (error) throw new Error(`Supabase get messages failed: ${error.message}`);
+
+  return data ? data.map(toChatMessage) : [];
 }
 
 export async function findUser(id: string): Promise<ChatUser | null> {

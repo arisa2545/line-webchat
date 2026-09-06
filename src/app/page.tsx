@@ -1,7 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import { ChatBubbleIcon } from "@/components/icons/ChatBubbleIcon";
+import UserList from "@/components/UserList";
 import "@/styles/chat-console.css";
+import ChatWindow from "@/components/ChatWindow";
 
 export default function Home() {
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
   return (
     <div className="chat-console">
       {/* ── Header ───────────────────────────────────────────── */}
@@ -10,42 +17,37 @@ export default function Home() {
           <span className="chat-console__logo">L</span>
           <h1 className="chat-console__title">LINE Webchat Console</h1>
         </div>
-
-        <span className="chat-console__badge">ยังไม่เชื่อมต่อ LINE OA</span>
       </header>
 
       <div className="chat-console__body">
         {/* ── Sidebar: User List ──────────────────────────── */}
         <aside className="chat-console__sidebar">
-          <div className="chat-console__sidebar-header">
-            <h2 className="chat-console__sidebar-title">การสนทนา</h2>
-            <p className="chat-console__sidebar-count">0 รายการ</p>
-          </div>
-
-          {/* TODO: แทนที่ด้วย <UserList /> */}
-          <div className="chat-console__sidebar-empty">
-            <p>
-              ยังไม่มีผู้ใช้ทักเข้ามา
-              <br />
-              รอเชื่อมต่อ LINE webhook
-            </p>
-          </div>
+          <UserList
+            selectedUserId={selectedUserId}
+            onSelect={setSelectedUserId}
+          />
         </aside>
 
         {/* ── Chat pane ────────────────────────────────────────── */}
         <section className="chat-console__chat">
-          {/* TODO: แทนที่ด้วย <ChatWindow /> */}
-          <div className="chat-console__empty">
-            <div>
-              <div className="chat-console__empty-icon">
-                <ChatBubbleIcon />
+          {selectedUserId && (
+            <ChatWindow key={selectedUserId} selectedUserId={selectedUserId} />
+          )}
+          {!selectedUserId && (
+            <div className="chat-console__empty">
+              <div>
+                <div className="chat-console__empty-icon">
+                  <ChatBubbleIcon />
+                </div>
+                <p className="chat-console__empty-title">
+                  ยังไม่ได้เลือกห้องแชท
+                </p>
+                <p className="chat-console__empty-hint">
+                  เลือกผู้ใช้จากรายการทางซ้ายเพื่อดูข้อความ
+                </p>
               </div>
-              <p className="chat-console__empty-title">ยังไม่ได้เลือกห้องแชท</p>
-              <p className="chat-console__empty-hint">
-                เลือกผู้ใช้จากรายการทางซ้ายเพื่อดูข้อความ
-              </p>
             </div>
-          </div>
+          )}
 
           {/* TODO: แทนที่ด้วย <MessageInput /> */}
           <div className="chat-console__composer">
